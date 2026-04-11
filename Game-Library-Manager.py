@@ -2,7 +2,9 @@ import sqlite3
 
 con = sqlite3.connect(r"gamelib.db")
 
-con.execute(
+cur = con.cursor()
+
+cur.execute(
     """
     CREATE TABLE IF NOT EXISTS games (
         "id" INTEGER,
@@ -22,7 +24,7 @@ def addgame():
     platform = input("Enter the Game Platform: ")
     genre = input("Enter the Game Genre: ")
     status = input("Enter the Game status: ")
-    con.execute(
+    cur.execute(
         "INSERT INTO games (name, platform, genre, status) VALUES (?, ?, ?, ?);",
         (name, platform, genre, status),
     )
@@ -32,7 +34,7 @@ def addgame():
 
 def viewallgames():
     print("Game List..")
-    result = con.execute("SELECT * FROM games")
+    result = cur.execute("SELECT * FROM games")
     for item in result:
         print(item)
 
@@ -44,7 +46,7 @@ def updategame():
     platform = input("Enter the Game Platform: ")
     genre = input("Enter the Game Genre: ")
     status = input("Enter the Game status: ")
-    con.execute(
+    cur.execute(
         "UPDATE games set name=?, platform=?, genre=?, status=? WHERE id=?;",
         (name, platform, genre, status, id),
     )
@@ -55,7 +57,7 @@ def updategame():
 def deletegame():
     print("Delete Game..")
     id = int(input("Enter the Entry ID: "))
-    con.execute("DELETE FROM games WHERE id=?;", (id,))
+    cur.execute("DELETE FROM games WHERE id=?;", (id,))
     con.commit()
 
 
