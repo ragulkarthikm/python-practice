@@ -1,94 +1,100 @@
 import sqlite3
 
-con = sqlite3.connect(r"gamelib.db")
 
-cur = con.cursor()
+class DBManager:
 
-cur.execute(
-    """
-    CREATE TABLE IF NOT EXISTS games (
-        "id" INTEGER,
-        "name" TEXT,
-        "platform" TEXT,
-        "genre" TEXT,
-        "status" TEXT,
-        PRIMARY KEY("id" AUTOINCREMENT)
-    );"""
-)
-con.commit()
+    def __init__(self, DBPath):
+        self.con = sqlite3.connect(DBPath)
 
+        self.cur = self.con.cursor()
 
-def addgame():
-    print("Add Game...")
-    name = input("Enter the Game Title: ")
-    platform = input("Enter the Game Platform: ")
-    genre = input("Enter the Game Genre: ")
-    status = input("Enter the Game status: ")
-    cur.execute(
-        "INSERT INTO games (name, platform, genre, status) VALUES (?, ?, ?, ?);",
-        (name, platform, genre, status),
-    )
-    con.commit()
-    print("Game Added..")
+        self.cur.execute(
+            """
+            CREATE TABLE IF NOT EXISTS games (
+                "id" INTEGER,
+                "name" TEXT,
+                "platform" TEXT,
+                "genre" TEXT,
+                "status" TEXT,
+                PRIMARY KEY("id" AUTOINCREMENT)
+            );"""
+        )
+        self.con.commit()
 
+    def addgame(self, name, platform, genre, status):
+        print("adding game ..../")
+        self.cur.execute(
+            "INSERT INTO games (name, platform, genre, status) VALUES (?, ?, ?, ?);",
+            (name, platform, genre, status),
+        )
+        self.con.commit()
+        print("Game Added...")
 
-def viewallgames():
-    print("Game List..")
-    result = cur.execute("SELECT * FROM games")
-    for item in result:
-        print(item)
+    def allgames(self):
+        print("-----------------All Games--------------------")
+        data = self.cur.execute("SELECT * FROM games")
+        for item in data:
+            print(item)
 
+    def updategame(self, name, platform, genre, status, id):
+        print("Updating Your game data............/")
+        self.cur.execute(
+            "UPDATE games set name=?, platform=?, genre=?, status=? WHERE id=?;",
+            (name, platform, genre, status, id),
+        )
+        self.con.commit()
+        print("Game Data Updated....")
 
-def updategame():
-    print("Update Game Details..")
-    id = int(input("Enter the Entry ID: "))
-    name = input("Enter the Game Title: ")
-    platform = input("Enter the Game Platform: ")
-    genre = input("Enter the Game Genre: ")
-    status = input("Enter the Game status: ")
-    cur.execute(
-        "UPDATE games set name=?, platform=?, genre=?, status=? WHERE id=?;",
-        (name, platform, genre, status, id),
-    )
-    con.commit()
-    print("Game data updated..")
+    def deletegame(self, id):
+        print("Deleting the game data............/")
+        self.cur.execute("DELETE FROM games WHERE id=?;", (id,))
+        self.con.commit()
+        print("Game Deleted..")
 
 
-def deletegame():
-    print("Delete Game..")
-    id = int(input("Enter the Entry ID: "))
-    cur.execute("DELETE FROM games WHERE id=?;", (id,))
-    con.commit()
-
+db = DBManager(r"C:\Users\ASUS\OneDrive\Desktop\gamelib.db")
 
 while True:
     print(
         """
-            1. Add Game 
-            2. View Library 
-            3. Update Game Status 
-            4. Remove Game 
-            5. Exit
-           """
+        1 Add game
+        2 View all games
+        3 Update a game
+        4 Delete a game
+        5 Exit
+
+        """
     )
-    c = int(input("Select Your Choice : "))
-    if c == 1:
-        addgame()
+    ch = int(input("Enter the Number : "))
 
-    elif c == 2:
-        viewallgames()
+    if ch == 1:
+        print("Add Game")
+        name = input("Enter the game name: ")
+        platform = input("Enter the game platform: ")
+        genre = input("Enter the game genre: ")
+        status = input("Enter the game status: ")
+        db.addgame(name, platform, genre, status)
 
-    elif c == 3:
-        updategame()
+    elif ch == 2:
+        db.allgames()
 
-    elif c == 4:
-        deletegame()
+    elif ch == 3:
+        print("Update Game Data")
+        id = int(input("Enter the Game data ID: "))
+        name = input("Enter the game name: ")
+        platform = input("Enter the game platform: ")
+        genre = input("Enter the game genre: ")
+        status = input("Enter the game status: ")
+        db.updategame(name, platform, genre, status, id)
 
-    elif c == 5:
-        print("Thank You..")
+    elif ch == 4:
+        print("Delete Game Data")
+        id = int(input("Enter the Game data ID: "))
+        db.deletegame(id)
+
+    elif ch == 5:
+        print(".....................Thank You.....................")
         break
 
     else:
-        print("Invalid Selection")
-
-con.close()
+        print("Invalid Number")
