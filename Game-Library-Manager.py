@@ -11,12 +11,12 @@ class DBManager:
         self.cur.execute(
             """
             CREATE TABLE IF NOT EXISTS games (
-                "id" INTEGER,
+                "g_id" INTEGER,
                 "name" TEXT,
                 "platform" TEXT,
                 "genre" TEXT,
                 "status" TEXT,
-                PRIMARY KEY("id" AUTOINCREMENT)
+                PRIMARY KEY("g_id" AUTOINCREMENT)
             );"""
         )
         self.con.commit()
@@ -31,25 +31,30 @@ class DBManager:
         print("Game Added...")
 
     def allgames(self):
-        print("-----------------All Games--------------------")
+        print("-----------------All Games--------------------\n")
         data = self.cur.execute("SELECT * FROM games")
         for item in data:
             print(item)
+        print("\n")
+        print("*************************************************")
 
-    def updategame(self, name, platform, genre, status, id):
+    def updategame(self, name, platform, genre, status, g_id):
         print("Updating Your game data............/")
         self.cur.execute(
-            "UPDATE games set name=?, platform=?, genre=?, status=? WHERE id=?;",
-            (name, platform, genre, status, id),
+            "UPDATE games set name=?, platform=?, genre=?, status=? WHERE g_id=?;",
+            (name, platform, genre, status, g_id),
         )
         self.con.commit()
         print("Game Data Updated....")
 
-    def deletegame(self, id):
+    def deletegame(self, g_id):
         print("Deleting the game data............/")
-        self.cur.execute("DELETE FROM games WHERE id=?;", (id,))
+        self.cur.execute("DELETE FROM games WHERE g_id=?;", (g_id,))
         self.con.commit()
         print("Game Deleted..")
+
+    def DBclose(self):
+        self.con.close()
 
 
 db = DBManager(r"C:\Users\ASUS\OneDrive\Desktop\gamelib.db")
@@ -65,36 +70,57 @@ while True:
 
         """
     )
-    ch = int(input("Enter the Number : "))
+    try:
+        ch = int(input("Enter the Number : "))
 
-    if ch == 1:
-        print("Add Game")
-        name = input("Enter the game name: ")
-        platform = input("Enter the game platform: ")
-        genre = input("Enter the game genre: ")
-        status = input("Enter the game status: ")
-        db.addgame(name, platform, genre, status)
+        if ch == 1:
+            print("Add Game")
+            name = input("Enter the game name: ")
+            platform = input("Enter the game platform: ")
+            genre = input("Enter the game genre: ")
+            status = input("Enter the game status: ")
+            db.addgame(name, platform, genre, status)
 
-    elif ch == 2:
-        db.allgames()
+        elif ch == 2:
+            db.allgames()
 
-    elif ch == 3:
-        print("Update Game Data")
-        id = int(input("Enter the Game data ID: "))
-        name = input("Enter the game name: ")
-        platform = input("Enter the game platform: ")
-        genre = input("Enter the game genre: ")
-        status = input("Enter the game status: ")
-        db.updategame(name, platform, genre, status, id)
+        elif ch == 3:
+            while True:
+                try:
+                    print("Update Game Data")
+                    g_id = int(input("Enter the Game data ID: "))
+                except ValueError:
+                    print("Please use numerical value, (Game ID : 325)")
+                    print("...........................................")
+                else:
+                    break
+            name = input("Enter the game name: ")
+            platform = input("Enter the game platform: ")
+            genre = input("Enter the game genre: ")
+            status = input("Enter the game status: ")
+            db.updategame(name, platform, genre, status, g_id)
 
-    elif ch == 4:
-        print("Delete Game Data")
-        id = int(input("Enter the Game data ID: "))
-        db.deletegame(id)
+        elif ch == 4:
+            while True:
+                print("Delete Game Data")
+                try:
+                    g_id = int(input("Enter the Game data ID: "))
+                    db.deletegame(g_id)
+                except ValueError:
+                    print("Please use numerical value, (Game ID : 325)")
+                    print("...........................................")
+                else:
+                    break
 
-    elif ch == 5:
-        print(".....................Thank You.....................")
-        break
+        elif ch == 5:
+            print(".....................Thank You.....................")
+            break
 
-    else:
-        print("Invalid Number")
+        else:
+            print("Invalid Number. Select number between 1 to 5")
+
+    except ValueError:
+        print("Please use the menu number below (1 to 5)")
+
+
+db.DBclose()
