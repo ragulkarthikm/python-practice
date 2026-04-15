@@ -1,6 +1,19 @@
 import sqlite3
 
 
+class gamedata:
+    def get_g_id(self):
+        while True:
+            try:
+                self.g_id = int(input("Enter the Game data ID: "))
+            except ValueError:
+                print("Please use numerical value, (Game ID : 325)")
+                print("...........................................")
+            else:
+                break
+        return self.g_id
+
+
 class DBManager:
 
     def __init__(self, DBPath):
@@ -57,7 +70,8 @@ class DBManager:
         self.con.close()
 
 
-db = DBManager(r"C:\Users\ASUS\OneDrive\Desktop\gamelib.db")
+db = DBManager(r"gamelib.db")
+game = gamedata()
 
 while True:
     print(
@@ -85,32 +99,18 @@ while True:
             db.allgames()
 
         elif ch == 3:
-            while True:
-                try:
-                    print("Update Game Data")
-                    g_id = int(input("Enter the Game data ID: "))
-                except ValueError:
-                    print("Please use numerical value, (Game ID : 325)")
-                    print("...........................................")
-                else:
-                    break
+            print("Update Game Data")
+            u_g_id = game.get_g_id()
             name = input("Enter the game name: ")
             platform = input("Enter the game platform: ")
             genre = input("Enter the game genre: ")
             status = input("Enter the game status: ")
-            db.updategame(name, platform, genre, status, g_id)
+            db.updategame(name, platform, genre, status, u_g_id)
 
         elif ch == 4:
-            while True:
-                print("Delete Game Data")
-                try:
-                    g_id = int(input("Enter the Game data ID: "))
-                    db.deletegame(g_id)
-                except ValueError:
-                    print("Please use numerical value, (Game ID : 325)")
-                    print("...........................................")
-                else:
-                    break
+            print("Delete Game Data")
+            u_g_id = game.get_g_id()
+            db.deletegame(u_g_id)
 
         elif ch == 5:
             print(".....................Thank You.....................")
