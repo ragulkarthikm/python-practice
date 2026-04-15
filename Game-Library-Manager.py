@@ -1,4 +1,5 @@
 import sqlite3
+from tabulate import tabulate
 
 
 class gamedata:
@@ -45,9 +46,15 @@ class DBManager:
 
     def allgames(self):
         print("-----------------All Games--------------------\n")
-        data = self.cur.execute("SELECT * FROM games")
-        for item in data:
-            print(item)
+        self.cur.execute("SELECT * FROM games")
+        data = self.cur.fetchall()
+        print(
+            tabulate(
+                data,
+                headers=["ID", "Title", "Platform", "Genre", "Status"],
+                tablefmt="fancy_grid",
+            )
+        )
         print("\n")
         print("*************************************************")
 
@@ -70,7 +77,7 @@ class DBManager:
         self.con.close()
 
 
-db = DBManager(r"gamelib.db")
+db = DBManager(r"C:\Users\ASUS\OneDrive\Desktop\gamelib.db")
 game = gamedata()
 
 while True:
