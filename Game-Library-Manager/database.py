@@ -125,3 +125,33 @@ class DBManager:
         print("Disconnecting from SQLite")
         self.con.close()
         print("Disconnected from SQLite")
+
+    def mini_stat(self):
+        print(
+            """
+=================================
+    LIBRARY DASHBOARD
+=================================
+"""
+        )
+
+        self.cur.execute("SELECT count(name) FROM games;")
+        mstat_game_owned = self.cur.fetchone()[0]
+        mstat_game_owned = mstat_game_owned or 0
+        print("Total Games Owned:   ", mstat_game_owned)
+
+        self.cur.execute("SELECT sum(playtime) FROM games;")
+        mstat_pt = self.cur.fetchone()[0]
+        mstat_pt = mstat_pt or 0
+        print("Total Hours Played:  ", mstat_pt)
+
+        self.cur.execute("SELECT avg(personal_rating) FROM games;")
+        mstat_rating = self.cur.fetchone()[0]
+        mstat_rating = mstat_rating or 0
+        print("Average Game Rating: ", mstat_rating)
+
+        self.cur.execute("SELECT COUNT(status) FROM games WHERE status = 'Completed';")
+        mstat_comp = self.cur.fetchone()[0]
+        print("Games Completed:     ", mstat_comp)
+
+        print("=================================")

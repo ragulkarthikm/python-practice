@@ -5,6 +5,8 @@ import database as mdb
 db = mdb.DBManager(r"gamelib.db")
 game = dm.gamedata()
 
+db.mini_stat()
+
 while True:
     print(
         """
