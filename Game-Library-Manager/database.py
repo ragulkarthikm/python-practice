@@ -1,5 +1,6 @@
 import sqlite3
 from tabulate import tabulate
+import data_models as dm
 
 
 class DBManager:
@@ -130,7 +131,7 @@ class DBManager:
         print(
             """
 =================================
-    LIBRARY DASHBOARD
+       LIBRARY DASHBOARD
 =================================
 """
         )
@@ -155,3 +156,28 @@ class DBManager:
         print("Games Completed:     ", mstat_comp)
 
         print("=================================")
+
+    def search_game(self, search_fat, keyword):
+
+        qru = f"SELECT * FROM games WHERE {search_fat} LIKE ?"
+        sf_keyword = f"%{keyword}%"
+        self.cur.execute(qru, (sf_keyword,))
+        s_result = self.cur.fetchall()
+        print(
+            tabulate(
+                s_result,
+                headers=[
+                    "ID",
+                    "Title",
+                    "Platform",
+                    "Genre",
+                    "Release Year",
+                    "Developer Name",
+                    "Store",
+                    "Status",
+                    "Playtime(h)",
+                    "Rating(1 to 10)",
+                ],
+                tablefmt="fancy_grid",
+            )
+        )

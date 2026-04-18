@@ -1,3 +1,5 @@
+import database as mdb
+
 stores_list = [
     "Steam",
     "Epic Games Store",
@@ -120,3 +122,37 @@ class gamedata:
                     print("Selected option is ", ch_list_item)
                     return ch_list_item
                     break
+
+    def search_type(self):
+        while True:
+            try:
+                search_fat = int(input("Select the Game search factor: "))
+
+            except ValueError:
+                print("Invalid choice. Select number between 1 to 10")
+
+            else:
+                if search_fat == 1:
+                    return f"g_id"
+                elif search_fat == 2:
+                    return f"name"
+                elif search_fat == 3:
+                    return f"platform"
+                elif search_fat == 4:
+                    return f"genre"
+                elif search_fat == 5:
+                    return f"release_year"
+                elif search_fat == 6:
+                    return f"developer"
+                elif search_fat == 7:
+                    return f"storefront"
+                elif search_fat == 8:
+                    return f"status"
+                elif search_fat == 9:
+                    return f"playtime"
+                elif search_fat == 10:
+                    return f"personal_rating"
+                else:
+                    print("Invalid Number. Select number between 1 to 10")
+                return search_fat
+                break

@@ -14,7 +14,8 @@ while True:
         2 View all games
         3 Update a game
         4 Delete a game
-        5 Exit
+        5 Search the Game
+        6 Exit
 
         """
     )
@@ -78,14 +79,36 @@ while True:
             db.deletegame(u_g_id)
 
         elif ch == 5:
+            print("=================================")
+            print("      Search for Games")
+            print("=================================")
+            print(
+                """
+                1  ID
+                2  Name
+                3  Platform
+                4  Genre
+                5  Release Year
+                6  Developer
+                7  Storefront
+                8  Status
+                9  Playtime
+                10 Personal Rating
+                """
+            )
+            search_fat = game.search_type()
+            keyword = input("Enter the Game search value: ")
+            db.search_game(search_fat, keyword)
+
+        elif ch == 6:
             print(".....................Thank You.....................")
             break
 
         else:
-            print("Invalid Number. Select number between 1 to 5")
+            print("Invalid Number. Select number between 1 to 6")
 
     except ValueError:
-        print("Please use the menu number below (1 to 5)")
+        print("Please use the menu number below (1 to 6)")
 
 
 db.DBclose()
