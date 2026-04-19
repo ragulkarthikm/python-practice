@@ -15,7 +15,8 @@ while True:
         3 Update a game
         4 Delete a game
         5 Search the Game
-        6 Exit
+        6 Export to CSV
+        7 Exit
 
         """
     )
@@ -31,8 +32,8 @@ while True:
             developer = input("Enter the developer Name: ")
             storefront = game.get_from_list(dm.stores_list, "Stores")
             status = game.get_from_list(dm.statu_list, "Status")
-            playtime = input("Enter the game play time")
-            personal_rating = input("Enter the Game rating")
+            playtime = input("Enter the game play time: ")
+            personal_rating = input("Enter the Game rating: ")
             db.addgame(
                 name,
                 platform,
@@ -58,8 +59,8 @@ while True:
             developer = input("Enter the developer Name: ")
             storefront = game.get_from_list(dm.stores_list, "Stores")
             status = game.get_from_list(dm.statu_list, "Status")
-            playtime = input("Enter the game play time")
-            personal_rating = input("Enter the Game rating")
+            playtime = input("Enter the game play time: ")
+            personal_rating = input("Enter the Game rating: ")
             db.updategame(
                 name,
                 platform,
@@ -101,14 +102,19 @@ while True:
             db.search_game(search_fat, keyword)
 
         elif ch == 6:
+            print("Exporting Your data as CSV file")
+            db.export_to_csv()
+            print("Data Exported")
+
+        elif ch == 7:
             print(".....................Thank You.....................")
             break
 
         else:
-            print("Invalid Number. Select number between 1 to 6")
+            print("Invalid Number. Select number between 1 to 7")
 
     except ValueError:
-        print("Please use the menu number below (1 to 6)")
+        print("Please use the menu number below (1 to 7)")
 
 
 db.DBclose()

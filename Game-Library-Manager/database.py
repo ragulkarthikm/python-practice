@@ -1,5 +1,6 @@
 import sqlite3
 from tabulate import tabulate
+import csv
 import data_models as dm
 
 
@@ -181,3 +182,23 @@ class DBManager:
                 tablefmt="fancy_grid",
             )
         )
+
+    def export_to_csv(self):
+        self.cur.execute("SELECT * FROM games")
+        data = self.cur.fetchall()
+        headers = (
+            "ID",
+            "Title",
+            "Platform",
+            "Genre",
+            "Release Year",
+            "Developer Name",
+            "Store",
+            "Status",
+            "Playtime(h)",
+            "Rating(1 to 10)",
+        )
+        with open("game_csv_export.csv", "w", newline="") as csvfile:
+            csvexport = csv.writer(csvfile)
+            csvexport.writerow(headers)
+            csvexport.writerows(data)
