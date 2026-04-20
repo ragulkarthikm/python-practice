@@ -30,32 +30,11 @@ class DBManager:
         self.con.commit()
         print("Connected to SQLite")
 
-    def addgame(
-        self,
-        name,
-        platform,
-        genre,
-        release_year,
-        developer,
-        storefront,
-        status,
-        playtime,
-        personal_rating,
-    ):
+    def addgame(self, new_game_data):
         print("adding game ..../")
         self.cur.execute(
             "INSERT INTO games (name, platform, genre, release_year, developer, storefront, status, playtime, personal_rating) VALUES (?,?,?,?,?,?,?,?,?);",
-            (
-                name,
-                platform,
-                genre,
-                release_year,
-                developer,
-                storefront,
-                status,
-                playtime,
-                personal_rating,
-            ),
+            (new_game_data),
         )
         self.con.commit()
         print("Game Added...")
@@ -87,30 +66,14 @@ class DBManager:
 
     def updategame(
         self,
-        name,
-        platform,
-        genre,
-        release_year,
-        developer,
-        storefront,
-        status,
-        playtime,
-        personal_rating,
+        update_game_data,
         g_id,
     ):
         print("Updating Your game data............/")
         self.cur.execute(
             "UPDATE games set name=?, platform=?, genre=?, release_year=?, developer=?, storefront=?, status=?, playtime=?, personal_rating=? WHERE g_id=?;",
             (
-                name,
-                platform,
-                genre,
-                release_year,
-                developer,
-                storefront,
-                status,
-                playtime,
-                personal_rating,
+                *update_game_data,
                 g_id,
             ),
         )
