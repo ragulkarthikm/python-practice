@@ -1,5 +1,6 @@
 import database as mdb
 
+
 stores_list = [
     "Steam",
     "Epic Games Store",
@@ -123,6 +124,28 @@ class gamedata:
                     return ch_list_item
                     break
 
+    def get_all_data(self):
+        name = input("Enter the game name: ")
+        platform = self.get_from_list(platforms_list, "Platforms")
+        genre = self.get_from_list(genres_list, "Genres")
+        release_year = self.get_num_data("Enter the release year (eg : 2010) : ")
+        developer = input("Enter the developer Name: ")
+        storefront = self.get_from_list(stores_list, "Stores")
+        status = self.get_from_list(statu_list, "Status")
+        playtime = self.get_num_data("Enter the game play time: ")
+        personal_rating = self.get_rating_data()
+        return (
+            name,
+            platform,
+            genre,
+            release_year,
+            developer,
+            storefront,
+            status,
+            playtime,
+            personal_rating,
+        )
+
     def search_type(self):
         while True:
             try:
@@ -156,3 +179,29 @@ class gamedata:
                     print("Invalid Number. Select number between 1 to 10")
                 return search_fat
                 break
+
+    def get_num_data(self, print_data):
+        print(print_data)
+        while True:
+            try:
+                self.g_num_data = int(input("Enter the Value: "))
+            except ValueError:
+                print("Please use numerical value")
+                print("...........................................")
+            else:
+                break
+        return self.g_num_data
+
+    def get_rating_data(self):
+        print("Rate you game from 1 to 10 (0 for no rating)")
+        while True:
+            try:
+                rate = int(input("Enter the Game rating: "))
+            except ValueError:
+                print("Invalid choice. Select number between 0 to 10")
+            else:
+                if rate < 0 or rate > 10:
+                    print("Invalid choice. Select number between 0 to 10")
+                else:
+                    return rate
+                    break

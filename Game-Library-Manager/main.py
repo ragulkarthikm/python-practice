@@ -25,26 +25,8 @@ while True:
 
         if ch == 1:
             print("Add Game")
-            name = input("Enter the game name: ")
-            platform = game.get_from_list(dm.platforms_list, "Platforms")
-            genre = game.get_from_list(dm.genres_list, "Genres")
-            release_year = input("Enter the release year (eg : 2000) : ")
-            developer = input("Enter the developer Name: ")
-            storefront = game.get_from_list(dm.stores_list, "Stores")
-            status = game.get_from_list(dm.statu_list, "Status")
-            playtime = input("Enter the game play time: ")
-            personal_rating = input("Enter the Game rating: ")
-            db.addgame(
-                name,
-                platform,
-                genre,
-                release_year,
-                developer,
-                storefront,
-                status,
-                playtime,
-                personal_rating,
-            )
+            new_game_data = game.get_all_data()
+            db.addgame(new_game_data)
 
         elif ch == 2:
             db.allgames()
@@ -52,25 +34,9 @@ while True:
         elif ch == 3:
             print("Update Game Data")
             u_g_id = game.get_g_id()
-            name = input("Enter the game name: ")
-            platform = game.get_from_list(dm.platforms_list, "Platforms")
-            genre = game.get_from_list(dm.genres_list, "Genres")
-            release_year = input("Enter the release year (eg : 2000) : ")
-            developer = input("Enter the developer Name: ")
-            storefront = game.get_from_list(dm.stores_list, "Stores")
-            status = game.get_from_list(dm.statu_list, "Status")
-            playtime = input("Enter the game play time: ")
-            personal_rating = input("Enter the Game rating: ")
+            update_game_data = game.get_all_data()
             db.updategame(
-                name,
-                platform,
-                genre,
-                release_year,
-                developer,
-                storefront,
-                status,
-                playtime,
-                personal_rating,
+                update_game_data,
                 u_g_id,
             )
 
