@@ -25,8 +25,24 @@ while True:
 
         if ch == 1:
             print("Add Game")
-            new_game_data = game.get_all_data()
-            db.addgame(new_game_data)
+            print("*************************************")
+            print("  1 Get data from RAWG API")
+            print("  2 Enter the game data manually")
+            print("*************************************")
+            while True:
+                try:
+                    d_ch = int(input("Choose a number: "))
+                except ValueError:
+                    print("Invalid Number. Select number 1 or 2")
+                else:
+                    if d_ch == 1:
+                        game.get_api_data()
+                    elif d_ch == 2:
+                        new_game_data = game.get_all_data()
+                        db.addgame(new_game_data)
+                        break
+                    else:
+                        print("Invalid Number. Select number 1 or 2")
 
         elif ch == 2:
             db.allgames()

@@ -1,5 +1,5 @@
 import database as mdb
-
+import requests
 
 stores_list = [
     "Steam",
@@ -205,3 +205,6 @@ class gamedata:
                 else:
                     return rate
                     break
+
+    def get_api_data(self):
+        print("Feat - Work in progress..")
