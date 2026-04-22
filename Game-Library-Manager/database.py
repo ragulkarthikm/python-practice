@@ -95,7 +95,7 @@ class DBManager:
         print(
             """
 =================================
-       LIBRARY DASHBOARD
+       Game Library Manager
 =================================
 """
         )

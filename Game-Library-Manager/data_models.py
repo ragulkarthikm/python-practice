@@ -207,4 +207,27 @@ class gamedata:
                     break
 
     def get_api_data(self):
-        print("Feat - Work in progress..")
+        ser_c = input("Enter the game name: ")
+        url = f"https://api.rawg.io/api/games?key=_API_KEY_&search={ser_c}"
+
+        api_resp = requests.get(url)
+        data = api_resp.json()
+
+        gamelist = data["results"]
+        game_item1 = gamelist[0]
+
+        game_title = game_item1.get("name", "unknow")
+        game_date = game_item1.get("released", "")
+        game_year = game_date[:4]
+        game_genre_list = game_item1.get("genres", [])
+        game_genre = game_genre_list[0]["name"]
+
+        print(game_title)
+        print(game_year)
+        print(game_genre)
+
+        print("")
+        print("***********************")
+        print("Work in progress..")
+        print("***********************")
+        print("")
