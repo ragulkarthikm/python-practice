@@ -37,6 +37,7 @@ while True:
                 else:
                     if d_ch == 1:
                         game.get_api_data()
+                        break  # temp break
                     elif d_ch == 2:
                         new_game_data = game.get_all_data()
                         db.addgame(new_game_data)

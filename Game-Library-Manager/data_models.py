@@ -207,27 +207,47 @@ class gamedata:
                     break
 
     def get_api_data(self):
+
+        api_key = "_api_key_"
+
         ser_c = input("Enter the game name: ")
-        url = f"https://api.rawg.io/api/games?key=_API_KEY_&search={ser_c}"
+        url = f"https://api.rawg.io/api/games?key={api_key}&search={ser_c}"
 
         api_resp = requests.get(url)
         data = api_resp.json()
 
         gamelist = data["results"]
-        game_item1 = gamelist[0]
 
-        game_title = game_item1.get("name", "unknow")
-        game_date = game_item1.get("released", "")
-        game_year = game_date[:4]
-        game_genre_list = game_item1.get("genres", [])
-        game_genre = game_genre_list[0]["name"]
+        gamelist = data.get("results", [])
 
-        print(game_title)
-        print(game_year)
-        print(game_genre)
+        for i, game in enumerate(gamelist[:10], start=1):
+            id = game.get("id", "N/A")
+            name = game.get("name", "N/A")
+            released = game.get("released", "N/A")
+            print(i, id, name, released)
 
         print("")
+        game_chr = int(input("enter the game: "))
+        print("")
+        user_game_chr = game_chr - 1
+
+        gid = gamelist[user_game_chr]["id"]
+
+        url2 = f"https://api.rawg.io/api/games/{gid}?key={api_key}"
+
+        resp2 = requests.get(url2)
+        data2 = resp2.json()
+
+        developer_name = data2.get("developers", [])
+
+        print(data2.get("name"))
+        print(developer_name[0].get("name"))
+        print("")
+        print(data2.get("description_raw"))
+
+        # display "WIP"
+        print("")
         print("***********************")
-        print("Work in progress..")
+        print("feat - Work in progress..")
         print("***********************")
         print("")
