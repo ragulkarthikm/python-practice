@@ -1,5 +1,9 @@
 import database as mdb
 import requests
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 stores_list = [
     "Steam",
@@ -208,10 +212,12 @@ class gamedata:
 
     def get_api_data(self):
 
-        api_key = "_api_key_"
+        api_key = os.getenv("api_key")
 
         ser_c = input("Enter the game name: ")
         url = f"https://api.rawg.io/api/games?key={api_key}&search={ser_c}"
+
+        print("Loading.....  Getting Games List from RAWG")
 
         api_resp = requests.get(url)
         data = api_resp.json()
@@ -234,6 +240,8 @@ class gamedata:
         gid = gamelist[user_game_chr]["id"]
 
         url2 = f"https://api.rawg.io/api/games/{gid}?key={api_key}"
+
+        print("Loading..... Getting Game Data from RAWG")
 
         resp2 = requests.get(url2)
         data2 = resp2.json()
