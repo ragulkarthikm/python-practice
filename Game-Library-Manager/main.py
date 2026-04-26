@@ -31,13 +31,17 @@ while True:
             print("*************************************")
             while True:
                 try:
+                    print(
+                        "The RAWG API provides the game name, developer name, release year, and game genre."
+                    )
                     d_ch = int(input("Choose a number: "))
                 except ValueError:
                     print("Invalid Number. Select number 1 or 2")
                 else:
                     if d_ch == 1:
-                        game.get_api_data()
-                        break  # temp break
+                        new_game_data_api = game.get_api_data()
+                        db.addgame(new_game_data_api)
+                        break
                     elif d_ch == 2:
                         new_game_data = game.get_all_data()
                         db.addgame(new_game_data)

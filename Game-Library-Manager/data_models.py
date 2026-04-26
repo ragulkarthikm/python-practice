@@ -213,7 +213,7 @@ class gamedata:
     def get_api_data(self):
 
         api_key = os.getenv("api_key")
-
+        
         ser_c = input("Enter the game name: ")
         url = f"https://api.rawg.io/api/games?key={api_key}&search={ser_c}"
 
@@ -248,14 +248,26 @@ class gamedata:
 
         developer_name = data2.get("developers", [])
 
-        print(data2.get("name"))
-        print(developer_name[0].get("name"))
-        print("")
-        print(data2.get("description_raw"))
+        r_date = data2.get("released", "unknow")
+        game_g = data2.get("genres")
 
-        # display "WIP"
-        print("")
-        print("***********************")
-        print("feat - Work in progress..")
-        print("***********************")
-        print("")
+        name = data2.get("name")
+        platform = self.get_from_list(platforms_list, "Platforms")
+        genre = game_g[0]["name"]
+        release_year = r_date[:4]
+        developer = developer_name[0].get("name")
+        storefront = self.get_from_list(stores_list, "Stores")
+        status = self.get_from_list(statu_list, "Status")
+        playtime = self.get_num_data("Enter the game play time: ")
+        personal_rating = self.get_rating_data()
+        return (
+            name,
+            platform,
+            genre,
+            release_year,
+            developer,
+            storefront,
+            status,
+            playtime,
+            personal_rating,
+        )
