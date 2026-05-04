@@ -1,5 +1,9 @@
 import database as mdb
+import requests
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 
 stores_list = [
     "Steam",
@@ -205,3 +209,65 @@ class gamedata:
                 else:
                     return rate
                     break
+
+    def get_api_data(self):
+
+        api_key = os.getenv("api_key")
+        
+        ser_c = input("Enter the game name: ")
+        url = f"https://api.rawg.io/api/games?key={api_key}&search={ser_c}"
+
+        print("Loading.....  Getting Games List from RAWG")
+
+        api_resp = requests.get(url)
+        data = api_resp.json()
+
+        gamelist = data["results"]
+
+        gamelist = data.get("results", [])
+
+        for i, game in enumerate(gamelist[:10], start=1):
+            id = game.get("id", "N/A")
+            name = game.get("name", "N/A")
+            released = game.get("released", "N/A")
+            print(i, id, name, released)
+
+        print("")
+        game_chr = int(input("enter the game: "))
+        print("")
+        user_game_chr = game_chr - 1
+
+        gid = gamelist[user_game_chr]["id"]
+
+        url2 = f"https://api.rawg.io/api/games/{gid}?key={api_key}"
+
+        print("Loading..... Getting Game Data from RAWG")
+
+        resp2 = requests.get(url2)
+        data2 = resp2.json()
+
+        developer_name = data2.get("developers", [])
+
+        r_date = data2.get("released", "unknow")
+        game_g = data2.get("genres")
+
+        name = data2.get("name")
+        platform = self.get_from_list(platforms_list, "Platforms")
+        genre = game_g[0]["name"]
+        release_year = r_date[:4]
+        developer = developer_name[0].get("name")
+        storefront = self.get_from_list(stores_list, "Stores")
+        status = self.get_from_list(statu_list, "Status")
+        playtime = self.get_num_data("Enter the game play time: ")
+        personal_rating = self.get_rating_data()
+        return (
+            name,
+            platform,
+            genre,
+            release_year,
+            developer,
+            storefront,
+            status,
+            playtime,
+            personal_rating,
+        )
